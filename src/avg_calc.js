@@ -41,8 +41,32 @@ export default function Avr_Calc() {
     }));
   };
 
+  React.useEffect(
+    function calculateResult() {
+      let result = "";
+      const midtermPercentage = 40 - avg.quizPercentage;
+      if (avg.quiz === "" && avg.makeup === "") {
+        result = (avg.midterm * 40) / 100 + (avg.final * 60) / 100;
+      } else if (avg.quiz === "") {
+        result = (avg.midterm * 40) / 100 + (avg.makeup * 60) / 100;
+      } else if (avg.makeup === "") {
+        result =
+          (avg.midterm * midtermPercentage) / 100 +
+          (avg.quiz * avg.quizPercentage) / 100 +
+          (avg.final * 60) / 100;
+      } else {
+        result =
+          (avg.midterm * midtermPercentage) / 100 +
+          (avg.quiz * avg.quizPercentage) / 100 +
+          (avg.makeup * 60) / 100;
+      }
+
+      setResult("Your average is " + Math.round(result) + " points.");
+    },
+    [avg]
+  );
+
   React.useEffect(() => {
-    const midtermPercentage = 40 - avg.quizPercentage;
     if (
       !(
         isNumber(avg.midterm) ||
@@ -53,44 +77,23 @@ export default function Avr_Calc() {
     ) {
       toggleQuizPercentage(true);
       setResult("You have to enter numbers!");
-    } else {
-      if (
-        !(
-          (avg.midterm < 100 && avg.midterm > 0) ||
-          (avg.quiz < 100 && avg.quiz > 0) ||
-          (avg.final < 100 && avg.final > 0) ||
-          (avg.makeup < 100 && avg.makeup > 0)
-        )
-      ) {
-        setResult("You have to enter numbers between 0-100!");
-      } else {
-        if (avg.quiz !== "") {
-          toggleQuizPercentage(false);
-        } else if (avg.quiz === "") {
-          toggleQuizPercentage(true);
-        }
-        let result = "";
-
-        if (avg.quiz === "" && avg.makeup === "") {
-          result = (avg.midterm * 40) / 100 + (avg.final * 60) / 100;
-        } else if (avg.quiz === "") {
-          result = (avg.midterm * 40) / 100 + (avg.makeup * 60) / 100;
-        } else if (avg.makeup === "") {
-          result =
-            (avg.midterm * midtermPercentage) / 100 +
-            (avg.quiz * avg.quizPercentage) / 100 +
-            (avg.final * 60) / 100;
-        } else {
-          result =
-            (avg.midterm * midtermPercentage) / 100 +
-            (avg.quiz * avg.quizPercentage) / 100 +
-            (avg.makeup * 60) / 100;
-        }
-
-        setResult("Your average is " + Math.round(result) + " points.");
-      }
     }
-  }, [avg.midterm, avg.quiz, avg.makeup, avg.final, avg.quizPercentage]);
+
+    if (avg.quiz !== "") {
+      toggleQuizPercentage(false);
+    } else if (avg.quiz === "") {
+      toggleQuizPercentage(true);
+    }
+    console.log(avg);
+    if (
+      (avg.midterm !== "" && (avg.midterm < 0 || avg.midterm > 100)) ||
+      (avg.quiz !== "" && (avg.quiz < 0 || avg.quiz > 100)) ||
+      (avg.final !== "" && (avg.final < 0 || avg.final > 100)) ||
+      (avg.makeup !== "" && (avg.makeup < 0 || avg.makeup > 100))
+    ) {
+      setResult("Error: One or more grades is not between 0 and 100.");
+    }
+  }, [avg]);
 
   const a = [];
   for (let i = 10; i <= 30; i++) {
