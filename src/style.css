@@ -1,0 +1,59 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  background-color: darkgrey;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+}
+
+.header {
+  display: flex;
+  background-color: #40ac2c;
+}
+
+.header > img {
+  width: 100px;
+  margin-right: 20px;
+}
+
+.header > h1 {
+  color: white;
+}
+
+.avg--container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.avg--input,
+.avg--quizPerc {
+  padding: 5px;
+  border: none;
+  outline: solid 2px black;
+  border-radius: 7px;
+  margin: 7px;
+  width: 200px;
+}
+.avg--input {
+  text-align: center;
+  background-color: lightgrey;
+}
+.avg--quizPerc {
+  text-indent: 75px;
+  margin-top: 0;
+  background-color: lightgrey;
+}
+
+.avg--quizPercLabel {
+  margin-bottom: -10px;
+  margin-top: 3px;
+}
+
+.avg--result {
+  margin-top: 10px;
+  font-size: 20px;
+}
